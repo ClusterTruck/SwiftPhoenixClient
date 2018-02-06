@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "SwiftPhoenixClient"
-  s.version          = "0.6.0"
+  s.version          = "0.7.0"
   s.summary          = "Connect your Phoenix and iOS applications through WebSockets!"
 
 # This description is used to generate tags and improve search results.
@@ -29,10 +29,10 @@ on Phoenix Channels check out the guide:
 http://www.phoenixframework.org/docs/channels
                        DESC
 
-  s.homepage         = "https://github.com/davidstump/SwiftPhoenixClient"
+  s.homepage         = "https://github.com/ClusterTruck/SwiftPhoenixClient"
   s.license          = 'MIT'
   s.author           = { "David Stump" => "david@davidstump.net" }
-  s.source           = { :git => "https://github.com/davidstump/SwiftPhoenixClient.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/ClusterTruck/SwiftPhoenixClient.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '9.0'
   s.requires_arc = true
