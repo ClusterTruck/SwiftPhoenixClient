@@ -29,5 +29,7 @@ class PathTests: XCTestCase {
 
     func testendpointWithProtocol() {
         XCTAssertEqual(Path.endpointWithProtocol(prot: "ws", domainAndPort: "localhost:4000", path: "socket", transport: "websocket"), "http://localhost:4000/socket/websocket", "Should format a Phoenix endpoint URL.")
+        XCTAssertEqual(Path.endpointWithProtocol(prot: "wss", domainAndPort: "localhost:4000", path: "socket", transport: "websocket"), "https://localhost:4000/socket/websocket", "Should format a SSL Phoenix endpoint URL.")
+        XCTAssertEqual(Path.endpointWithProtocol(prot: "https", domainAndPort: "localhost:4000", path: "socket", transport: "websocket"), "https://localhost:4000/socket/websocket", "Should format a SSL Phoenix endpoint URL.")
     }
 }

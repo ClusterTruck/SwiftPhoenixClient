@@ -9,8 +9,13 @@ import Foundation
 
 public class Socket: WebSocketDelegate {
     var conn: WebSocket?
-    var endPoint: String?
     var channels: [Channel] = []
+    var endPoint: String?
+    public var socketEndpoint: String? {
+        get {
+            return self.endPoint
+        }
+    }
 
     var sendBuffer: [Void] = []
     var sendBufferTimer = Timer()
@@ -41,6 +46,42 @@ public class Socket: WebSocketDelegate {
 
         resetBufferTimer()
         reconnect()
+    }
+    
+    /// Pass a fully qualified Websocket URL to initialize a Socket connection. Upon initialization,
+    /// the socket is not connected and you must call .connect() to connect the socket
+    ///
+    /// Example:
+    ///     let socket = Socket(endpoint: "ws://localhost:4000/socket/websocket", params: ["token": "abc123"])
+    ///
+    /// - parameter endpoint: The fully URL endpoint to connect to
+    /// - parameter params: Optional, default is nil. Query parameters to append to the URL
+    public init(endpoint: String, params: [String: Any]? = nil) {
+        let components = endpoint.components(separatedBy: "://")
+        if components.count < 2 {
+            fatalError("An invalid URL was given.")
+        }
+        
+        let proto = Path.protocolFrom(proto: components[0])
+        let restOfUrl = components[1]
+        self.endPoint = "\(proto)://\(restOfUrl)"
+        
+        if let parameters = params {
+            self.endPoint = self.endPoint! + "?" + parameters.map({ "\($0.0)=\($0.1)" }).joined(separator: "&")
+        }
+    }
+    
+    /// Connects to the Socket
+    ///
+    /// Example:
+    ///     let socket = Socket(endpoint: "ws://localhost:4000/socket/websocket", params: ["token": "abc123"])
+    ///     socket.connect().join(topic:)
+    ///
+    /// - return: The current socket, allowing you to string together calls
+    public func connect() -> Socket {
+        resetBufferTimer()
+        reconnect()
+        return self
     }
 
     /**

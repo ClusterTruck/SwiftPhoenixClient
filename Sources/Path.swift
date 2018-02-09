@@ -62,19 +62,27 @@ public struct Path {
      - returns: String
      */
     public static func endpointWithProtocol(prot:String, domainAndPort:String, path:String, transport:String) -> String {
-        var theProt = ""
-        switch prot {
-        case "ws":
-            theProt = "http"
-        case "wss":
-            theProt = "https"
-        default:
-            theProt = prot
-        }
+        let theProt = Path.protocolFrom(proto: prot)
 
         let theDomAndPort = removeLeadingAndTrailingSlashes(path: domainAndPort)
         let thePath = removeLeadingAndTrailingSlashes(path: path)
         let theTransport = removeLeadingAndTrailingSlashes(path: transport)
         return "\(theProt)://\(theDomAndPort)/\(thePath)/\(theTransport)"
+    }
+    
+    /// Gets the corresponding http protocol given a websocket protocol. If the
+    /// given protocol is not a websocket protocol, then it is returned without change
+    ///
+    /// - parameter proto: The websocket protocol. e.g "ws" or "wss"
+    /// - return: "http" or "https" or proto if not a "ws*" protocol
+    public static func protocolFrom(proto: String) -> String {
+        switch proto {
+        case "ws":
+            return "http"
+        case "wss":
+            return "https"
+        default:
+            return proto
+        }
     }
 }
